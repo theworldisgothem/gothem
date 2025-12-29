@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>$GOTHEM — Месть в темноте</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Courier New', 'Arial Black', monospace;
+            background-color: #000000;
+            color: #b0b0b0;
+            text-align: center;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow-x: hidden;
+        }
+        header {
+            padding: 40px 20px;
+        }
+        .logo-img {
+            max-width: 85%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+            margin-bottom: 30px;
+            border: 3px solid #ffffff;
+            filter: brightness(0.9) contrast(1.3);
+        }
+        h1 {
+            font-size: 4.5em;
+            margin: 20px 0;
+            text-shadow: 0 0 20px #ffffff, 3px 3px 15px #000000;
+            color: #ffffff;
+            letter-spacing: 5px;
+            font-weight: bold;
+        }
+        .token-address {
+            background: rgba(20, 20, 20, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #666666;
+            display: inline-block;
+            margin: 40px auto;
+            font-size: 1.3em;
+            font-weight: bold;
+            max-width: 90%;
+            word-break: break-all;
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.2);
+        }
+        .copy-btn {
+            background: transparent;
+            color: #ffffff;
+            border: 2px solid #ffffff;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s;
+        }
+        .copy-btn:hover {
+            background: #ffffff;
+            color: #000000;
+            box-shadow: 0 0 20px #ffffff;
+        }
+        .quotes {
+            padding: 40px 20px;
+            font-size: 1.6em;
+            font-style: normal;
+            color: #aaaaaa;
+            line-height: 1.8;
+        }
+        .quote {
+            margin: 40px 0;
+            text-shadow: 0 0 10px #000000;
+        }
+        footer {
+            padding: 20px;
+            font-size: 0.9em;
+            color: #555555;
+            background-color: #0a0a0a;
+        }
+        /* Подсказка для запуска музыки */
+        .sound-hint {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.8);
+            color: #fff;
+            padding: 10px 20px;
+            border: 1px solid #fff;
+            border-radius: 8px;
+            font-size: 1em;
+            z-index: 100;
+            opacity: 0.9;
+            transition: opacity 1s;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <img src="https://i.postimg.cc/zGpKYt0f/GOTHEM-PIC.png" 
+             alt="GOTHEM — месть в темноте" class="logo-img">
+        
+        <h1>$GOTHEM</h1>
+        
+        <div class="token-address">
+            Контракт: 
+            <div id="address">ВСТАВЬТЕ_РЕАЛЬНЫЙ_CA_ЗДЕСЬ</div>
+            <button class="copy-btn" onclick="copyAddress()">СКОПИРОВАТЬ АДРЕС</button>
+        </div>
+    </header>
+
+    <section class="quotes">
+        <div class="quote">"Богачи жиреют на наших костях"</div>
+        <div class="quote">"Готэм не спит. Готэм помнит."</div>
+        <div class="quote">"Они смеются в своих башнях из стекла и лжи"</div>
+        <div class="quote">"Мы — тени, которые они боятся увидеть"</div>
+        <div class="quote">"Месть не спрашивает разрешения 🦇"</div>
+    </section>
+
+    <footer>
+        &copy; 2025 $GOTHEM. Мы видим вас. Всегда. Not financial advice.
+    </footer>
+
+    <!-- Подсказка для пользователя -->
+    <div class="sound-hint" id="soundHint">
+        Кликните по странице, чтобы включить звук 🔊
+    </div>
+
+    <!-- Музыка -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="https://www.dropbox.com/scl/fi/8d462l26nnyhz1oih4359/NASTY-Slowed-Loop.mp3?rlkey=4byqohelwhqlz0jlvaxki0937&dl=1" type="audio/mpeg">
+        Ваш браузер не поддерживает аудио.
+    </audio>
+
+    <script>
+        const audio = document.getElementById('bgMusic');
+        const hint = document.getElementById('soundHint');
+        let unlocked = false;
+
+        function unlockAudio() {
+            if (unlocked) return;
+            audio.play().then(() => {
+                unlocked = true;
+                hint.style.opacity = '0';
+                setTimeout(() => { hint.style.display = 'none'; }, 1000);
+            }).catch(e => {
+                console.log("Не удалось запустить аудио:", e);
+            });
+        }
+
+        // Пробуем разные события для максимальной совместимости
+        document.body.addEventListener('click', unlockAudio);
+        document.body.addEventListener('touchstart', unlockAudio);
+        document.body.addEventListener('keydown', unlockAudio);
+        document.body.addEventListener('scroll', unlockAudio, { once: true });
+
+        // Пытаемся запустить сразу (на случай, если пользователь уже взаимодействовал с сайтом ранее)
+        audio.play().catch(() => {});
+    </script>
+
+</body>
+</html>
