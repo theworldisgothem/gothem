@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>$GOTHEM — Месть в темноте</title>
+    <title>$GOTHAM — Месть в темноте</title>
+    <!-- Font Awesome для иконок -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         body {
             margin: 0;
@@ -17,6 +19,7 @@
             flex-direction: column;
             justify-content: space-between;
             overflow-x: hidden;
+            position: relative;
         }
         header {
             padding: 40px 20px;
@@ -40,7 +43,7 @@
         }
         .token-address {
             background: rgba(20, 20, 20, 0.9);
-            padding: 20px;
+            padding: 30px;
             border-radius: 10px;
             border: 1px solid #666666;
             display: inline-block;
@@ -55,17 +58,38 @@
             background: transparent;
             color: #ffffff;
             border: 2px solid #ffffff;
-            padding: 12px 24px;
+            padding: 14px 28px;
             border-radius: 8px;
-            font-size: 1.1em;
+            font-size: 1.2em;
             cursor: pointer;
-            margin-top: 15px;
+            margin-top: 20px;
             transition: all 0.3s;
         }
         .copy-btn:hover {
             background: #ffffff;
             color: #000000;
-            box-shadow: 0 0 20px #ffffff;
+            box-shadow: 0 0 25px #ffffff;
+        }
+        /* Отдельная большая кнопка BUY под блоком контракта */
+        .buy-btn {
+            background: transparent;
+            color: #ffffff;
+            border: 3px solid #ffffff;
+            padding: 20px 50px;
+            border-radius: 10px;
+            font-size: 1.8em;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 50px auto;
+            display: block;
+            width: fit-content;
+            transition: all 0.4s;
+        }
+        .buy-btn:hover {
+            background: #ffffff;
+            color: #000000;
+            box-shadow: 0 0 40px #ffffff;
+            transform: scale(1.05);
         }
         .quotes {
             padding: 40px 20px;
@@ -84,7 +108,6 @@
             color: #555555;
             background-color: #0a0a0a;
         }
-        /* Подсказка для запуска музыки */
         .sound-hint {
             position: fixed;
             bottom: 20px;
@@ -100,9 +123,43 @@
             opacity: 0.9;
             transition: opacity 1s;
         }
+        /* Иконки в правом верхнем углу */
+        .social-fixed {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            z-index: 99;
+        }
+        .social-fixed a {
+            color: #ffffff;
+            font-size: 2.2em;
+            opacity: 0.7;
+            transition: all 0.3s;
+        }
+        .social-fixed a:hover {
+            opacity: 1;
+            transform: scale(1.2);
+            text-shadow: 0 0 15px #ffffff;
+        }
     </style>
 </head>
 <body>
+
+    <!-- Иконки соцсетей в правом верхнем углу -->
+    <div class="social-fixed">
+        <a href="https://t.me/your_gothem_channel" target="_blank" title="Telegram">
+            <i class="fab fa-telegram-plane"></i>
+        </a>
+        <a href="https://x.com/welc_to_gothem" target="_blank" title="X (Twitter)">
+            <i class="fab fa-x-twitter"></i>
+        </a>
+        <a href="https://dexscreener.com/solana/ВАШ_CA_ЗДЕСЬ" target="_blank" title="DexScreener">
+            <i class="fas fa-chart-line"></i>
+        </a>
+    </div>
 
     <header>
         <img src="https://i.postimg.cc/zGpKYt0f/GOTHEM-PIC.png" 
@@ -110,11 +167,17 @@
         
         <h1>$GOTHEM</h1>
         
+        <!-- Только контракт + копировать -->
         <div class="token-address">
             Контракт: 
-            <div id="address">ВСТАВЬТЕ_РЕАЛЬНЫЙ_CA_ЗДЕСЬ</div>
+            <div id="address">ВАШ_РЕАЛЬНЫЙ_CA_ЗДЕСЬ</div>
             <button class="copy-btn" onclick="copyAddress()">СКОПИРОВАТЬ АДРЕС</button>
         </div>
+
+        <!-- Кнопка BUY отдельно под блоком контракта -->
+        <button class="buy-btn" onclick="openJupiterSwap()">
+            BUY $GOTHEM
+        </button>
     </header>
 
     <section class="quotes">
@@ -126,21 +189,39 @@
     </section>
 
     <footer>
-        &copy; 2025 $GOTHEM. Мы видим вас. Всегда. Not financial advice.
+        &copy; 2025 $GOTHAM. Мы видим вас. Всегда. Not financial advice.
     </footer>
 
-    <!-- Подсказка для пользователя -->
     <div class="sound-hint" id="soundHint">
         Кликните по странице, чтобы включить звук 🔊
     </div>
 
-    <!-- Музыка -->
     <audio id="bgMusic" loop preload="auto">
         <source src="https://www.dropbox.com/scl/fi/8d462l26nnyhz1oih4359/NASTY-Slowed-Loop.mp3?rlkey=4byqohelwhqlz0jlvaxki0937&dl=1" type="audio/mpeg">
         Ваш браузер не поддерживает аудио.
     </audio>
 
     <script>
+        // Копирование адреса
+        function copyAddress() {
+            const addr = document.getElementById('address').textContent;
+            navigator.clipboard.writeText(addr).then(() => {
+                alert('Адрес скопирован.');
+            });
+        }
+
+        // Открытие Jupiter Swap
+        function openJupiterSwap() {
+            const ca = document.getElementById('address').textContent.trim();
+            if (ca === 'ВАШ_РЕАЛЬНЫЙ_CA_ЗДЕСЬ' || ca === '') {
+                alert('Сначала вставьте реальный адрес контракта!');
+                return;
+            }
+            const jupiterUrl = `https://jup.ag/swap/SOL-${ca}`;
+            window.open(jupiterUrl, '_blank');
+        }
+
+        // Автозапуск музыки
         const audio = document.getElementById('bgMusic');
         const hint = document.getElementById('soundHint');
         let unlocked = false;
@@ -151,20 +232,16 @@
                 unlocked = true;
                 hint.style.opacity = '0';
                 setTimeout(() => { hint.style.display = 'none'; }, 1000);
-            }).catch(e => {
-                console.log("Не удалось запустить аудио:", e);
-            });
+            }).catch(e => console.log("Ошибка аудио:", e));
         }
 
-        // Пробуем разные события для максимальной совместимости
         document.body.addEventListener('click', unlockAudio);
         document.body.addEventListener('touchstart', unlockAudio);
         document.body.addEventListener('keydown', unlockAudio);
         document.body.addEventListener('scroll', unlockAudio, { once: true });
-
-        // Пытаемся запустить сразу (на случай, если пользователь уже взаимодействовал с сайтом ранее)
         audio.play().catch(() => {});
     </script>
 
 </body>
 </html>
+
